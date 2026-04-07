@@ -11,6 +11,9 @@ constraintlayout = "2.2.1"
 coil = "2.7.0"
 volley = "1.2.1"
 fragment = "1.8.9"
+navigation = "2.9.7"
+fragmentVersion = "1.8.9"
+recyclerview = "1.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,7 +27,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 volley = { module = "com.android.volley:volley", version.ref = "volley" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragmentVersion" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+androidx-navigation-safe-args-gradle-plugin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }

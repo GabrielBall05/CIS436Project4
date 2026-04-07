@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -45,6 +46,9 @@ dependencies {
     implementation(libs.volley)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.coil)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
