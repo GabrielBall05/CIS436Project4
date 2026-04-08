@@ -32,8 +32,8 @@ class RecipeDetailsFragment : Fragment() {
         arguments?.let {
             val args = RecipeDetailsFragmentArgs.fromBundle(it)
             //TODO: This is catching the passed recipe id from RecipeListFragment and setting the title text view to just display the id.
-            //TODO: Change this to getting the full recipe from viewmodel by viewModel.getRecipeById(args.id) and setting the text views from there
-            binding.tvRecipeTitle.text = args.id.toString()
+            //TODO: Change this to getting the full recipe from viewmodel by viewModel.getRecipeById(args.id) and setting the text/image views from there
+            binding.tvRecipeName.text = args.id.toString()
         }
     }
 
