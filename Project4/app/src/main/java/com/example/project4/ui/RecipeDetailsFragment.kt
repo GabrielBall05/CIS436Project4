@@ -6,20 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.project4.R
 import com.example.project4.databinding.FragmentRecipeDetailsBinding
+import com.example.project4.viewmodels.RecipeViewModel
+import kotlin.getValue
 
 
 class RecipeDetailsFragment : Fragment() {
-    //Listener for fragment interaction
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }
-
     //Bindings
     private var _binding : FragmentRecipeDetailsBinding? = null
     private val binding get() = _binding!!
+
+    //ViewModel
+    private val viewModel: RecipeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,7 @@ class RecipeDetailsFragment : Fragment() {
         arguments?.let {
             val args = RecipeDetailsFragmentArgs.fromBundle(it)
             //TODO: This is catching the passed recipe id from RecipeListFragment and setting the title text view to just display the id.
-            //TODO: Change to getting the full recipe from viewmodel and setting title/details text views from there.
+            //TODO: Change this to getting the full recipe from viewmodel by viewModel.getRecipeById(args.id) and setting the text views from there
             binding.tvRecipeTitle.text = args.id.toString()
         }
     }

@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.example.project4.R
 import com.example.project4.databinding.FragmentRecipeListBinding
 import androidx.navigation.findNavController
+import com.example.project4.viewmodels.RecipeViewModel
 
 
 class RecipeListFragment : Fragment() {
@@ -16,6 +18,9 @@ class RecipeListFragment : Fragment() {
     //Bindings
     private var _binding : FragmentRecipeListBinding? = null
     private val binding get() = _binding!!
+
+    //ViewModel
+    private val viewModel: RecipeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.project4.databinding.ActivityMainBinding
 import com.example.project4.ui.RecipeDetailsFragment
 
-class MainActivity : AppCompatActivity(), RecipeDetailsFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,5 @@ class MainActivity : AppCompatActivity(), RecipeDetailsFragment.OnFragmentIntera
         }
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
 
-    }
 }
