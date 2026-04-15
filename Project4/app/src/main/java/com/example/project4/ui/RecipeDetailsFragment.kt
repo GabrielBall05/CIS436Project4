@@ -1,6 +1,12 @@
 package com.example.project4.ui
 
+// Francisco youtube link imports
+import android.content.Intent
 import android.net.Uri
+
+import coil.load
+import android.text.method.LinkMovementMethod
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,19 +28,9 @@ class RecipeDetailsFragment : Fragment() {
     //ViewModel
     private val viewModel: RecipeViewModel by activityViewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        arguments?.let {
-            val args = RecipeDetailsFragmentArgs.fromBundle(it)
-            //TODO: This is catching the passed recipe id from RecipeListFragment and setting the title text view to just display the id.
-            //TODO: Change this to getting the full recipe from viewmodel by viewModel.getRecipeById(args.id) and setting the text/image views from there
-            binding.tvRecipeName.text = args.id.toString()
-        }
     }
 
     override fun onCreateView(
@@ -49,11 +45,39 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args = RecipeDetailsFragmentArgs.fromBundle(requireArguments())
+        val recipe = viewModel.getRecipeById(args.id)
+
+        if (recipe != null) {
+            binding.tvRecipeName.text = recipe.name
+            binding.tvRecipeCategory.text = recipe.category
+            binding.imgRecipeImage.load(recipe.imageUrl)
+
+            val ingredientsText = recipe.ingredients.joinToString("\n") {
+                "${it.measurement} ${it.ingredient}"
+            }
+            binding.tvRecipeIngredients.text = ingredientsText
+            binding.tvRecipeInstructions.text = recipe.instructions
+
+            if (!recipe.youtubeVideo.isNullOrBlank()) {
+                binding.tvRecipeYTVideo.text = "Watch on YouTube"
+
+                binding.tvRecipeYTVideo.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(recipe.youtubeVideo))
+                    startActivity(intent)
+                }
+            } else {
+                binding.tvRecipeYTVideo.text = "No YouTube video available"
+            }
+
+        } else {
+            binding.tvRecipeName.text = "Recipe not found"
+        }
+
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

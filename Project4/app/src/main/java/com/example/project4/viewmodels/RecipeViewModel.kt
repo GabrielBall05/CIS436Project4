@@ -8,6 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.example.project4.data.Recipe
+import com.example.project4.data.IngredientMeasurement
+import com.android.volley.toolbox.JsonObjectRequest
+import org.json.JSONObject
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -40,15 +43,91 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         fetchCategories()
     }
 
+// Francisco: Fetch recipes with ingredients + youtube
     fun fetchRecipes() {
-        //TODO: Do the same tempList thing. Once done filling in the tempList, do "allRecipes = tempList" as well as "_displayedRecipes.value = allRecipes"
-        //TODO: btw I think you'll need to do JsonObjectRequest instead of JsonArrayRequest because of how the API returns its info
+
+        val url = "https://www.themealdb.com/api/json/v1/1/search.php?s="
+
+        val request = JsonObjectRequest(
+            url,
+            null,
+            { response ->
+
+                val mealsArray = response.getJSONArray("meals")
+                val tempList = mutableListOf<Recipe>()
+
+                for (i in 0 until mealsArray.length()) {
+                    val obj = mealsArray.getJSONObject(i)
+
+                    val ingredientsList = mutableListOf<IngredientMeasurement>()
+
+                    // TheMealDB gives 20 ingredient slots
+                    for (j in 1..20) {
+                        val ingredient = obj.getString("strIngredient$j")
+                        val measure = obj.getString("strMeasure$j")
+
+                        if (ingredient.isNotBlank() && ingredient != "null") {
+                            ingredientsList.add(
+                                IngredientMeasurement(
+                                    ingredient = ingredient,
+                                    measurement = measure
+                                )
+                            )
+                        }
+                    }
+
+                    val recipe = Recipe(
+                        id = obj.getString("idMeal").toInt(),
+                        name = obj.getString("strMeal"),
+                        category = obj.getString("strCategory"),
+                        ingredients = ingredientsList,
+                        instructions = obj.getString("strInstructions"),
+                        imageUrl = obj.getString("strMealThumb"),
+                        youtubeVideo = obj.optString("strYoutube", null)
+                    )
+
+                    tempList.add(recipe)
+                }
+
+                allRecipes = tempList
+                _displayedRecipes.value = allRecipes
+
+            },
+            { error ->
+                Log.e("RecipeViewModel", "Error fetching recipes: ${error.message}")
+            }
+        )
+
+        requestQueue.add(request)
     }
 
+    // Francisco: Fetch categories for spinner
     fun fetchCategories() {
-        //TODO: Do the same tempList thing. Once done filling in the tempList, do "_categories.value = tempList"
-        //TODO: The tempList should have a default first value of "All" so I think that would look like: val tempList = mutableListOf("All") then add more
-        //TODO: btw I think you'll need to do JsonObjectRequest instead of JsonArrayRequest because of how the API returns its info
+        val url = "https://www.themealdb.com/api/json/v1/1/categories.php"
+
+        val request = JsonObjectRequest(
+            url,
+            null,
+            { response ->
+
+                val categoriesArray = response.getJSONArray("categories")
+                val tempList = mutableListOf("All")
+
+                for (i in 0 until categoriesArray.length()) {
+                    val obj = categoriesArray.getJSONObject(i)
+                    val category = obj.getString("strCategory")
+                    tempList.add(category)
+                }
+
+                _categories.value = tempList
+
+            },
+            { error ->
+                Log.e("RecipeViewModel", "Error fetching categories: ${error.message}")
+            }
+        )
+
+        requestQueue.add(request)
     }
 
     //Will be called every time the user changes the value in the edit text search bar (something like binding.editText.onValueChanged {})
