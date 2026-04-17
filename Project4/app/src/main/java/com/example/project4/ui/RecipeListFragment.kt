@@ -60,6 +60,7 @@ class RecipeListFragment : Fragment() {
     // Francisco: Observe recipes from ViewModel
     private fun observeRecipes() {
         viewModel.displayedRecipes.observe(viewLifecycleOwner) { recipes ->
+            binding.tvEmptyMsg.visibility = if (recipes.isEmpty()) View.VISIBLE else View.INVISIBLE
             recipeAdapter.submitList(recipes)
         }
     }
@@ -74,6 +75,12 @@ class RecipeListFragment : Fragment() {
             )
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.categorySpinner.adapter = spinnerAdapter
+
+            //Set selection for orientation changes and such
+            val position = categoryList.indexOf(viewModel.currentSelectedCategory)
+            if (position >= 0) {
+                binding.categorySpinner.setSelection(position, false)
+            }
         }
     }
 

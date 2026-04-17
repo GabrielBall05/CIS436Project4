@@ -10,6 +10,7 @@ import com.android.volley.toolbox.Volley
 import com.example.project4.data.Recipe
 import com.example.project4.data.IngredientMeasurement
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.project4.data.Constants
 import org.json.JSONObject
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
@@ -27,11 +28,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     //For filtering the list
     private var currentSearchQuery = ""
-    private var currentSelectedCategory = "All"
+    public var currentSelectedCategory = "All"
 
-    //No need for a selectedRecipe var since RecipeDetailsFragment already catches the id as safe arg and calls getRecipeById() to retrieve the actual data.
-
-    //TODO: Use this queue for the fetches
+    //For making Volley requests
     private val requestQueue: RequestQueue by lazy {
         Volley.newRequestQueue(getApplication())
     }
@@ -45,8 +44,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
 // Francisco: Fetch recipes with ingredients + youtube
     fun fetchRecipes() {
-
-        val url = "https://www.themealdb.com/api/json/v1/1/search.php?s="
+        val url = "${Constants.BASE_URL}${Constants.GET_ALL}"
+        Log.d("RecipeViewModel", url)
 
         val request = JsonObjectRequest(
             url,
@@ -103,7 +102,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     // Francisco: Fetch categories for spinner
     fun fetchCategories() {
-        val url = "https://www.themealdb.com/api/json/v1/1/categories.php"
+        val url = "${Constants.BASE_URL}${Constants.GET_CATEGORIES}"
+        Log.d("RecipeViewModel", url)
 
         val request = JsonObjectRequest(
             url,

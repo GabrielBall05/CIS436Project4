@@ -82,5 +82,4 @@ class RecipeDetailsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

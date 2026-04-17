@@ -13,7 +13,4 @@ object Constants {
 
     //Append to BASE_URL to get list of categories (to fill in categories dropdown at the start)
     const val GET_CATEGORIES = "/categories.php"
-
-    //When user searches or selects from category dropdown, we use kotlin functions
-    //like .filter rather than sending out another api request
 }
