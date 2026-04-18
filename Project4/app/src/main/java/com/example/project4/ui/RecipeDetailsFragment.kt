@@ -51,7 +51,11 @@ class RecipeDetailsFragment : Fragment() {
         if (recipe != null) {
             binding.tvRecipeName.text = recipe.name
             binding.tvRecipeCategory.text = recipe.category
-            binding.imgRecipeImage.load(recipe.imageUrl)
+            binding.imgRecipeImage.load(recipe.imageUrl) {
+                //Null Image
+                error(R.drawable.null_image)
+                fallback(R.drawable.null_image)
+            }
 
             val ingredientsText = recipe.ingredients.joinToString("\n") {
                 "${it.measurement} ${it.ingredient}"

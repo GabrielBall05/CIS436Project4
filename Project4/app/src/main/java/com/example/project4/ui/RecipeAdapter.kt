@@ -4,6 +4,7 @@ import coil.load
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project4.R
 import com.example.project4.data.Recipe
 import com.example.project4.databinding.ItemRecipeBinding
 
@@ -31,7 +32,11 @@ class RecipeAdapter(
 
         holder.binding.tvRecipeName.text = recipe.name
         holder.binding.tvCategory.text = recipe.category
-        holder.binding.imgRecipeThumb.load(recipe.imageUrl)
+        holder.binding.imgRecipeThumb.load(recipe.imageUrl) {
+            //Null Image
+            error(R.drawable.null_image)
+            fallback(R.drawable.null_image)
+        }
         holder.itemView.setOnClickListener {
             onItemClick(recipe)
         }

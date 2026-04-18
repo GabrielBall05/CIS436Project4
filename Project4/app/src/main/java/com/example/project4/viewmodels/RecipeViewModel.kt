@@ -81,6 +81,9 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                         category = obj.getString("strCategory"),
                         ingredients = ingredientsList,
                         instructions = obj.getString("strInstructions"),
+                        //Null testing
+                        //imageUrl = "",
+                        //youtubeVideo = ""
                         imageUrl = obj.getString("strMealThumb"),
                         youtubeVideo = obj.optString("strYoutube", null)
                     )
