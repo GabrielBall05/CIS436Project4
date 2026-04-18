@@ -1,15 +1,27 @@
 # CIS436Project4
+# Gabriel Ball
+# Giovanni Claro
+# Francisco Hernandez
 
 Recipe Finder App
-Overview
 
+Overview
 This project is a multi-screen Android application built using Kotlin. The app allows users to browse recipes, search and filter them by category, and view detailed information including ingredients, instructions, images, and YouTube videos.
 
 The app uses the MealDB API to fetch real recipe data and demonstrates key mobile development concepts such as RecyclerView, Fragments, Navigation, ViewModel, LiveData, and API integration.
 
+Features
+Browse recipes from a live API
+Search recipes by name
+Filter recipes by category
+View detailed recipe information (ingredients + instructions)
+Display recipe images
+Open YouTube cooking videos directly from the app
+
 ViewModel code is in: Project4\app\src\main\java\com\example\project4\viewmodels
 UI code (fragments + adapter) is in: Project4\app\src\main\java\com\example\project4\ui
 Data class code is in: Project4\app\src\main\java\com\example\project4\data
+Screenshots are inside test plan at top level alongside the demo video
 
 Team Contributions
 
@@ -41,13 +53,11 @@ Executed test plan while providing screenshots and pass/fail
 Verified correct behavior of fetching, navigation, filtering, and persistence features
 Recorded and presented the explanation/demo video of the application
 
-Features
-Browse recipes from a live API
-Search recipes by name
-Filter recipes by category
-View detailed recipe information (ingredients + instructions)
-Display recipe images
-Open YouTube cooking videos directly from the app
+Biggest Hurdle
+Figuring out how we plan on using/implementing the free recipe API as its free plan is limited.
+
+Biggest "Ah-Ha"
+Understanding how ViewModel, LiveData, and RecyclerView works.
 
 Technologies Used
 Kotlin
