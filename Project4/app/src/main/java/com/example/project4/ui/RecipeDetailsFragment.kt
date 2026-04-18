@@ -45,39 +45,46 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Get the id safe arg, then get the corresponding recipe from the ViewModel
         val args = RecipeDetailsFragmentArgs.fromBundle(requireArguments())
         val recipe = viewModel.getRecipeById(args.id)
 
+        //Ensure there is a recipe to show
         if (recipe != null) {
+            //Set name and category text views
             binding.tvRecipeName.text = recipe.name
             binding.tvRecipeCategory.text = recipe.category
+            //Show image
             binding.imgRecipeImage.load(recipe.imageUrl) {
-                //Null Image
+                //Default null image if there was image was null or load failed
                 error(R.drawable.null_image)
                 fallback(R.drawable.null_image)
             }
 
+            //Set ingredients and instructions text views
             val ingredientsText = recipe.ingredients.joinToString("\n") {
                 "${it.measurement} ${it.ingredient}"
             }
             binding.tvRecipeIngredients.text = ingredientsText
             binding.tvRecipeInstructions.text = recipe.instructions
 
+            //Make Youtube text clickable if there is a link provided
             if (!recipe.youtubeVideo.isNullOrBlank()) {
                 binding.tvRecipeYTVideo.text = "Watch on YouTube"
 
+                //Launch an implicit intent to play the video in an external app (youtube/browser) when clicked
                 binding.tvRecipeYTVideo.setOnClickListener {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(recipe.youtubeVideo))
                     startActivity(intent)
                 }
-            } else {
+            } else { //There was no youtube video link, show unavailable message
                 binding.tvRecipeYTVideo.text = "No YouTube video available"
             }
-
-        } else {
+        } else { //Something went wrong, there is no corresponding recipe. Show error message
             binding.tvRecipeName.text = "Recipe not found"
         }
 
+        //Return to RecipeListFragment when back button is clicked
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }

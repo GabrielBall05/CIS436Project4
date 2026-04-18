@@ -42,19 +42,22 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         fetchCategories()
     }
 
-// Francisco: Fetch recipes with ingredients + youtube
+    // Francisco: Fetch recipes with ingredients + youtube
     fun fetchRecipes() {
         val url = "${Constants.BASE_URL}${Constants.GET_ALL}"
         Log.d("RecipeViewModel", url)
 
+        //Make request (JsonObjectRequest because the api returns the array inside an object first)
         val request = JsonObjectRequest(
             url,
             null,
             { response ->
 
+                //Get the array of meals
                 val mealsArray = response.getJSONArray("meals")
                 val tempList = mutableListOf<Recipe>()
 
+                //Parse each object in array
                 for (i in 0 until mealsArray.length()) {
                     val obj = mealsArray.getJSONObject(i)
 
@@ -75,6 +78,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                         }
                     }
 
+                    //Make the recipe object
                     val recipe = Recipe(
                         id = obj.getString("idMeal").toInt(),
                         name = obj.getString("strMeal"),
@@ -88,9 +92,11 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                         youtubeVideo = obj.optString("strYoutube", null)
                     )
 
+                    //Add to temp list
                     tempList.add(recipe)
                 }
 
+                //Update the master list and the LiveData display list
                 allRecipes = tempList
                 _displayedRecipes.value = allRecipes
 
@@ -100,6 +106,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             }
         )
 
+        //Send request
         requestQueue.add(request)
     }
 
@@ -108,45 +115,49 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val url = "${Constants.BASE_URL}${Constants.GET_CATEGORIES}"
         Log.d("RecipeViewModel", url)
 
+        //Make request
         val request = JsonObjectRequest(
             url,
             null,
             { response ->
 
+                //Get the array of categories
                 val categoriesArray = response.getJSONArray("categories")
-                val tempList = mutableListOf("All")
+                val tempList = mutableListOf("All") //Give first slot value of "All"
 
+                //Get each category
                 for (i in 0 until categoriesArray.length()) {
                     val obj = categoriesArray.getJSONObject(i)
                     val category = obj.getString("strCategory")
                     tempList.add(category)
                 }
 
+                //Update categories LiveData list
                 _categories.value = tempList
-
             },
             { error ->
                 Log.e("RecipeViewModel", "Error fetching categories: ${error.message}")
             }
         )
 
+        //Send request
         requestQueue.add(request)
     }
 
-    //Will be called every time the user changes the value in the edit text search bar (something like binding.editText.onValueChanged {})
+    //Will be called every time the user changes the value in the edit text search bar
     fun onSearchValueChange(q: String) {
         currentSearchQuery = q
-        performFilter()
+        performFilter() //Filter out recipes to display
     }
 
-    //Will be called every time the user changes the category selection in the spinner (something like binding.spinner.onItemSelectedListener {})
+    //Will be called every time the user changes the category selection in the spinner
     fun onCategoryFilterChange(c: String) {
         currentSelectedCategory = c
-        performFilter()
+        performFilter() //Filter out recipes to display
     }
 
     //Updates the _displayedRecipes list based on the filters.
-    //This changes displayedRecipes list which notifies whoever is observing it (the recyclerview)
+    //This changes displayedRecipes list which notifies whoever is observing it (the recyclerView)
     fun performFilter() {
         _displayedRecipes.value = allRecipes.filter { recipe ->
             val matchesSearch = recipe.name.contains(currentSearchQuery, ignoreCase = true)

@@ -6,6 +6,10 @@ This project is a multi-screen Android application built using Kotlin. The app a
 
 The app uses the MealDB API to fetch real recipe data and demonstrates key mobile development concepts such as RecyclerView, fragments, ViewModel, LiveData, and API integration.
 
+ViewModel code is in: Project4\app\src\main\java\com\example\project4\viewmodels
+UI code (fragments + adapter) is in: Project4\app\src\main\java\com\example\project4\ui
+Data class code is in: Project4\app\src\main\java\com\example\project4\data
+
 Team Contributions
 
 Gabe (Initial Development / Starter Code)
